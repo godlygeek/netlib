@@ -11,10 +11,10 @@ function! netlib#utility#deltree(dir)
   if has('unix')
     call system('rm -rf ' . shellescape(a:dir))
   elseif has('win32') || has('win64')
-    if executable('deltree')
-      call system('deltree ' . shellescape(a:dir))
+    if executable('rmdir')
+      call system('rmdir /s /q' . shellescape(a:dir))
     else
-      call system('rmdir /S ' . shellescape(a:dir))
+      call system('deltree /y ' . shellescape(a:dir))
     endif
   endif
 endfunction
