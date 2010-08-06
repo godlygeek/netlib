@@ -1,4 +1,5 @@
 if exists("g:netplugin_rsync_loaded")
+  \ || !executable('rsync')
   \ || empty(system('rsync --version')) || v:shell_error > 0
   finish
 endif
