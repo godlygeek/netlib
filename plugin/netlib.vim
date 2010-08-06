@@ -11,12 +11,12 @@ set cpo&vim
 try
   augroup Network
     au!
-    au BufReadCmd    *://* call netlib#HandleBufRead    (expand("<amatch>"))
-    au FileReadCmd   *://* call netlib#HandleFileRead   (expand("<amatch>"))
-    au BufWriteCmd   *://* call netlib#HandleBufWrite   (expand("<amatch>"))
-    au FileWriteCmd  *://* call netlib#HandleFileWrite  (expand("<amatch>"))
-    au FileAppendCmd *://* call netlib#HandleFileAppend (expand("<amatch>"))
-    au SourceCmd     *://* call netlib#HandleSource     (expand("<amatch>"))
+    au BufReadCmd    *://* call netlib#Handle('BufRead',    expand("<amatch>"))
+    au FileReadCmd   *://* call netlib#Handle('FileRead',   expand("<amatch>"))
+    au BufWriteCmd   *://* call netlib#Handle('BufWrite',   expand("<amatch>"))
+    au FileWriteCmd  *://* call netlib#Handle('FileWrite',  expand("<amatch>"))
+    au FileAppendCmd *://* call netlib#Handle('FileAppend', expand("<amatch>"))
+    au SourceCmd     *://* call netlib#Handle('Source',     expand("<amatch>"))
   augroup END
 catch
 endtry

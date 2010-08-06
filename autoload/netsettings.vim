@@ -71,3 +71,8 @@ function! netsettings#HandlerList(protocol)
   call sort(items, "s:PrioSort")
   return map(items, 'v:val[0]')
 endfunction
+
+function! netsettings#IsIgnoredProtocol(prot)
+  let ignored = get(g:, 'netlib_ignored_protocols', [])
+  return (index(ignored, a:prot) != -1)
+endfunction

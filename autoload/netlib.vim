@@ -81,6 +81,11 @@ function! s:Handle(uri, funcname)
 
   try
     let [ prot, path ] = s:ValidateUri(a:uri)
+
+    if netsettings#IsIgnoredProtocol(prot)
+      throw "netlib.ignored: This protocol is intentionally ignored by netlib"
+    endif
+
     let handlers = netsettings#HandlerList(prot)
     for name in handlers
       let rv = call(s:handlers[prot][name][a:funcname], [ path, s:tempfile ], s:handlers[prot][name])
@@ -251,6 +256,15 @@ function! netlib#HandleSource(uri)
     exe 'source ' . fnameescape(s:tempfile)
   finally
     unlet g:netlib_operation
+  endtry
+endfunction
+
+" Exception-aware wrapper around all of the other Handle* functions
+function! netlib#Handle(type, uri)
+  try
+    call call('netlib#Handle' . a:type, [ a:uri ])
+  catch /^netlib.ignored:/
+    " Silently ignore all netlib.ignored exceptions
   endtry
 endfunction
 
