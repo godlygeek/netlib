@@ -118,12 +118,10 @@ function! s:ReadFileIntoBuffer(file)
   try
     " Make sure we don't change the file or altfile name...
     set cpo-=a cpo-=A cpo-=f cpo-=F
-    try
-      exe 'r' v:cmdarg fnameescape(a:file)
-    catch /^Vim\%((\a\+)\)\=:E325/
-      " The user will have already responded to this...
-      " There's no reason for us to print (another) message about it.
-    endtry
+    exe 'lockmarks 0r ++edit' v:cmdarg fnameescape(a:file)
+  catch /^Vim\%((\a\+)\)\=:E325/
+    " The user will have already responded to this...
+    " There's no reason for us to print (another) message about it.
   finally
     let &cpo = savecpo
   endtry
@@ -186,7 +184,7 @@ function! netlib#HandleBufRead(uri)
     call s:SetTempfile(a:uri)
     call s:CallReadHandler(a:uri)
     call s:ReadFileIntoBuffer(s:tempfile)
-    sil 1d_
+    sil $d_
     call setpos("']", [ 0, line('$'), 1, 0 ])
     doautocmd BufReadPost
   finally
